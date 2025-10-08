@@ -1,0 +1,320 @@
+<!doctype html>
+<html lang="hu">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Tagfelvételi — Word letöltés</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet">
+  <style>
+    body{font-family:Inter,system-ui,Arial;margin:0;background:#f4f6f8;display:flex;align-items:center;justify-content:center;min-height:100vh}
+    .card{width:95%;max-width:1100px;background:#fff;padding:28px;border-radius:12px;box-shadow:0 6px 24px rgba(16,24,40,0.08)}
+    header{display:flex;justify-content:center;margin-bottom:14px}
+    header img{height:64px}
+    h1{font-size:20px;text-align:center;margin:0 0 8px;color:#0f172a}
+    p.lead{color:#475569;text-align:center;margin:0 0 18px}
+    form{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:12px}
+    label{font-weight:600;color:#334155;font-size:13px;margin-bottom:4px;display:block}
+    input,select{padding:10px;border-radius:8px;border:1px solid #d1d5db;font-size:14px}
+    .actions{grid-column:1/-1;display:flex;gap:12px;justify-content:center;margin-top:18px}
+    button{background:#2563eb;color:#fff;padding:10px 18px;border-radius:10px;border:0;font-weight:700;cursor:pointer}
+    button.secondary{background:#9ca3af}
+    small.hint{display:block;color:#64748b;margin-top:6px;text-align:center}
+  </style>
+
+  <!-- Docxtemplater + PizZip + FileSaver CDN (client-side) -->
+  <script src="https://cdn.jsdelivr.net/npm/pizzip@3.1.6/dist/pizzip.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/docxtemplater@3.29.0/build/docxtemplater.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/file-saver@2.0.5/dist/FileSaver.min.js"></script>
+</head>
+<body>
+  <div class="card">
+    <header>
+      <img src="./src/logó.jpg" alt="Kamarai logó">
+    </header>
+
+    <h1>Tagfelvételi űrlap — Word letöltése</h1>
+    <p class="lead">Töltsd ki az űrlapot, majd kattints a <strong>Word letöltése</strong>-re. A sablon `Tagfelveteli_template.docx` legyen a lap mellett (same folder).</p>
+
+    <form id="form" onsubmit="return false;">
+      <!-- A mezők pontosan a megadott mezőnevekkel (CompanyName, TaxNumber, MonthEntry, stb.) -->
+      <div>
+        <label>Vállalkozás neve (CompanyName)</label>
+        <input id="CompanyName" />
+      </div>
+      <div>
+        <label>Belépés hónapja (MonthEntry)</label>
+        <input id="MonthEntry" placeholder="pl. 2025.01" />
+      </div>
+
+      <div>
+        <label>Adószám (TaxNumber)</label>
+        <input id="TaxNumber" />
+      </div>
+      <div>
+        <label>Cégjegyzék / nyilvántartás (RegisterNumber)</label>
+        <input id="RegisterNumber" />
+      </div>
+
+      <div>
+        <label>Alapítás dátuma (FoundationDate)</label>
+        <input id="FoundationDate" type="date" />
+      </div>
+      <div>
+        <label>Székhely cím (Headquarters_Address)</label>
+        <input id="Headquarters_Address" />
+      </div>
+
+      <div>
+        <label>Levelezési cím (MailingAddress)</label>
+        <input id="MailingAddress" />
+      </div>
+      <div>
+        <label>Bankszámlaszám (BankAccount)</label>
+        <input id="BankAccount" />
+      </div>
+
+      <div>
+        <label>Központi e-mail (MainEmail)</label>
+        <input id="MainEmail" type="email" />
+      </div>
+      <div>
+        <label>Központi telefonszám (MainPhone)</label>
+        <input id="MainPhone" />
+      </div>
+
+      <div>
+        <label>Weboldal (Website)</label>
+        <input id="Website" />
+      </div>
+      <div>
+        <label>CEO név (CEO_Name)</label>
+        <input id="CEO_Name" />
+      </div>
+
+      <div>
+        <label>CEO beosztás (CEO_Position)</label>
+        <input id="CEO_Position" />
+      </div>
+
+      <div>
+        <label>Kamarai képviselő név (ChamberRep_Name)</label>
+        <input id="ChamberRep_Name" />
+      </div>
+      <div>
+        <label>Kamarai képviselő beosztás (ChamberRep_Position)</label>
+        <input id="ChamberRep_Position" />
+      </div>
+
+      <div>
+        <label>Kamarai képviselő mobil (ChamberRep_Mobile)</label>
+        <input id="ChamberRep_Mobile" />
+      </div>
+      <div>
+        <label>Kamarai képviselő e-mail (ChamberRep_Email)</label>
+        <input id="ChamberRep_Email" type="email" />
+      </div>
+
+      <div>
+        <label>Pénzügyi kapcsolattartó név (FinanceContact_Name)</label>
+        <input id="FinanceContact_Name" />
+      </div>
+      <div>
+        <label>Pénzügyi kapcsolattartó telefon (FinanceContact_Phone)</label>
+        <input id="FinanceContact_Phone" />
+      </div>
+
+      <div>
+        <label>Pénzügyi kapcsolattartó e-mail (FinanceContact_Email)</label>
+        <input id="FinanceContact_Email" type="email" />
+      </div>
+
+      <div>
+        <label>Főtevékenység kód (MainActivity_Code)</label>
+        <input id="MainActivity_Code" />
+      </div>
+      <div>
+        <label>Főtevékenység megnevezés (MainActivity_Name)</label>
+        <input id="MainActivity_Name" />
+      </div>
+
+      <div>
+        <label>További tevékenység 1 kód (OtherActivity1_Code)</label>
+        <input id="OtherActivity1_Code" />
+      </div>
+      <div>
+        <label>További tevékenység 1 megnevezés (OtherActivity1_Name)</label>
+        <input id="OtherActivity1_Name" />
+      </div>
+
+      <div>
+        <label>További tevékenység 2 kód (OtherActivity2_Code)</label>
+        <input id="OtherActivity2_Code" />
+      </div>
+      <div>
+        <label>További tevékenység 2 megnevezés (OtherActivity2_Name)</label>
+        <input id="OtherActivity2_Name" />
+      </div>
+
+      <div>
+        <label>Nyugdíjas egyéni vállalkozó? (IsPensioner)</label>
+        <select id="IsPensioner"><option value=""></option><option>Igen</option><option>Nem</option></select>
+      </div>
+
+      <div>
+        <label>Tagozat (Section)</label>
+        <select id="Section"><option value=""></option><option>Ipari</option><option>Kereskedelmi</option><option>Szolgáltatási</option><option>Mezőgazdasági</option></select>
+      </div>
+
+      <div>
+        <label>Szakmai osztály (ProfessionalClass)</label>
+        <select id="ProfessionalClass">
+          <option value=""></option>
+          <option>Élelmiszer kereskedelem</option><option>Kereskedelem</option><option>Szállítás, közlekedés</option><option>Turizmus</option>
+          <option>Építőipari</option><option>Épületgépészeti, elektromos ipari</option><option>Gép- és járműipari</option>
+          <option>Egészségügyi és szépségipari</option><option>Könnyűipari</option><option>Élelmiszer- és egyéb ipari</option>
+          <option>Park-, út-, mélyépítő és tervező</option><option>Hagyományos kézműves</option><option>Gépipari</option>
+          <option>Textilipari</option><option>Műanyagipari</option><option>Élelmiszeripari</option><option>Faipari</option>
+          <option>Építőipari</option><option>Közszolgáltatási</option>
+        </select>
+      </div>
+
+      <div>
+        <label>Nettó árbevétel (országos) (Revenue_National)</label>
+        <input id="Revenue_National" type="number" step="0.01" />
+      </div>
+      <div>
+        <label>Nettó árbevétel (Regionális) (Revenue_Region)</label>
+        <input id="Revenue_Region" type="number" step="0.01" />
+      </div>
+
+      <div>
+        <label>ELÁBÉ (COGS)</label>
+        <input id="COGS" type="number" step="0.01" />
+      </div>
+
+      <div>
+        <label>Közvetített szolgáltatások (MediatedServices)</label>
+        <input id="MediatedServices" type="number" step="0.01" />
+      </div>
+
+      <div>
+        <label>Anyagköltség (MaterialCosts)</label>
+        <input id="MaterialCosts" type="number" step="0.01" />
+      </div>
+
+      <div>
+        <label>Korrigált nettó árbevétel (Revenue_Adjusted)</label>
+        <input id="Revenue_Adjusted" type="number" step="0.01" readonly />
+      </div>
+
+      <div>
+        <label>Jegyzett tőke (RegisteredCapital)</label>
+        <input id="RegisteredCapital" type="number" step="0.01" />
+      </div>
+
+      <div>
+        <label>Foglalkoztatottak száma (EmployeeCount)</label>
+        <input id="EmployeeCount" type="number" />
+      </div>
+
+      <div>
+        <label>Elfogadom a tagságot (Accept_Membership)</label>
+        <select id="Accept_Membership"><option value=""></option><option>Igen</option><option>Nem</option></select>
+      </div>
+
+      <div>
+        <label>Adatkezelés hozzájárulás (Consent_DataProcessing)</label>
+        <select id="Consent_DataProcessing"><option value=""></option><option>Igen</option><option>Nem</option></select>
+      </div>
+
+      <div>
+        <label>Beküldés dátuma (SubmissionDate)</label>
+        <input id="SubmissionDate" type="date" />
+      </div>
+
+      <div>
+        <label>Beküldés városa (SubmissionCity)</label>
+        <input id="SubmissionCity" />
+      </div>
+
+      <div style="grid-column:1/-1">
+        <label>Aláírás (elektronikus / szöveges) (Signature)</label>
+        <input id="Signature" />
+        <small class="hint">A mezők pontos neveinek listája: CompanyName, MonthEntry, TaxNumber, RegisterNumber, FoundationDate, Headquarters_Address, MailingAddress, BankAccount, MainEmail, MainPhone, Website, CEO_Name, CEO_Position, ChamberRep_Name, ChamberRep_Position, ChamberRep_Mobile, ChamberRep_Email, FinanceContact_Name, FinanceContact_Phone, FinanceContact_Email, MainActivity_Code, MainActivity_Name, OtherActivity1_Code, OtherActivity1_Name, OtherActivity2_Code, OtherActivity2_Name, IsPensioner, Section, ProfessionalClass, Revenue_National, Revenue_Region, COGS, MediatedServices, MaterialCosts, Revenue_Adjusted, RegisteredCapital, EmployeeCount, Accept_Membership, Consent_DataProcessing, SubmissionDate, SubmissionCity, Signature</small>
+      </div>
+
+      <div class="actions">
+        <button id="downloadBtn">Word letöltése</button>
+        <button id="previewBtn" class="secondary" type="button" onclick="alert('Nincs előnézet — a sablon helyőrzőkkel kerül kitöltésre.')">Előkép</button>
+      </div>
+    </form>
+  </div>
+
+  <script>
+    // mezők listája (a sablon MERGEFIELD neveihez igazítva)
+    const FIELDS = ["CompanyName","MonthEntry","TaxNumber","RegisterNumber","FoundationDate","Headquarters_Address","MailingAddress","BankAccount","MainEmail","MainPhone","Website","CEO_Name","CEO_Position","ChamberRep_Name","ChamberRep_Position","ChamberRep_Mobile","ChamberRep_Email","FinanceContact_Name","FinanceContact_Phone","FinanceContact_Email","MainActivity_Code","MainActivity_Name","OtherActivity1_Code","OtherActivity1_Name","OtherActivity2_Code","OtherActivity2_Name","IsPensioner","Section","ProfessionalClass","Revenue_National","Revenue_Region","COGS","MediatedServices","MaterialCosts","Revenue_Adjusted","RegisteredCapital","EmployeeCount","Accept_Membership","Consent_DataProcessing","SubmissionDate","SubmissionCity","Signature"];
+
+    // automatikus számítás
+    ['Revenue_National','COGS','MediatedServices','MaterialCosts'].forEach(id=>{
+      const el = document.getElementById(id);
+      if(el) el.addEventListener('input', calcAdjusted);
+    });
+    function calcAdjusted(){
+      const rev = parseFloat(document.getElementById('Revenue_National').value)||0;
+      const cogs = parseFloat(document.getElementById('COGS').value)||0;
+      const med = parseFloat(document.getElementById('MediatedServices').value)||0;
+      const mat = parseFloat(document.getElementById('MaterialCosts').value)||0;
+      document.getElementById('Revenue_Adjusted').value = (rev - cogs - med - mat).toFixed(2);
+    }
+
+    // kitöltési objektum
+    function collectData(){
+      const data = {};
+      FIELDS.forEach(k => {
+        const el = document.getElementById(k);
+        data[k] = el ? el.value : '';
+      });
+      return data;
+    }
+
+    // letöltés: betöltjük a lokális / same-folder sablont (Tagfelveteli_template.docx)
+    document.getElementById('downloadBtn').addEventListener('click', async function(){
+      // validáció: néhány alapmező legyen kitöltve
+      if(!document.getElementById('CompanyName').value){
+        return alert('Kérjük add meg a vállalkozás nevét (CompanyName).');
+      }
+
+      // sablon fájl helye (ugyanabba a mappába tedd a HTML mellé)
+      const templatePath = './Tagfelveteli_template.docx';
+
+      try {
+        const resp = await fetch(templatePath);
+        if(!resp.ok) throw new Error('Sablon betöltése sikertelen. Ellenőrizd a fájl elérhetőségét és nevét (Tagfelveteli_template.docx).');
+
+        const arrayBuffer = await resp.arrayBuffer();
+        const zip = new PizZip(arrayBuffer);
+        const doc = new window.docxtemplater().loadZip(zip);
+
+        const data = collectData();
+        // docxtemplater expects keys without angle quotes; if your template uses MERGEFIELD like «CompanyName» replace it in the template with {{CompanyName}}
+        // But docxtemplater can also replace plain text tokens; if your Word uses MERGEFIELD fields, easiest is to convert MERGEFIELDs to {{CompanyName}} placeholders before using.
+        // Here we set the data object and render:
+        doc.setData(data);
+        try {
+          doc.render();
+        } catch (err) {
+          console.error('Doc render error', err);
+          alert('Hiba a sablon kitöltésekor — ellenőrizd, hogy a sablon .docx és a helyőrzők {{CompanyName}} formátumban vannak-e.');
+          return;
+        }
+
+        const out = doc.getZip().generate({type:"blob",mimeType:"application/vnd.openxmlformats-officedocument.wordprocessingml.document"});
+        saveAs(out, 'Tagfelveteli_kerelem_filled.docx');
+      } catch (e) {
+        console.error(e);
+        alert('Hiba: '+e.message);
+      }
+    });
+  </script>
+</body>
+</html>
